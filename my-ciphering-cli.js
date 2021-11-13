@@ -1,23 +1,27 @@
 const {parseCondition} = require("./parseCmdCondition");
 const {configValidation} = require("./configValidation");
-const { stdin, stdout, exit, argv, stderr } = process;
+const { exit, argv, stderr } = process;
 const {TransformStream} = require('./transformStream');
 const { WritableStream } = require('./writableStream');
 const { ReadableStream } = require('./readableStream');
 const stream = require('stream');
 
+const configKey = argv.filter((el) => {
+    return el === '-c' || el === '--config'
+})
+const inputKey = argv.filter((el) => {
+    return el === '-i' || el === '--input'
+})
+const outputKey = argv.filter((el) => {
+    return el === '-o' || el === '--output'
+})
 
+const config = parseCondition(argv, configKey);
+const input = parseCondition(argv, inputKey);
+const output = parseCondition(argv, outputKey);
 
-const config = parseCondition(argv, '-c');
-const input = parseCondition(argv, '-i');
-const output = parseCondition(argv, '-o');
-
-const MyTransformStream1 = new TransformStream('C1');
-const MyTransformStream2 = new TransformStream('C1');
-const MyTransformStream3 = new TransformStream('C1');
 const MyReadableStream = new ReadableStream(input);
 const MyWritableStream = new WritableStream(output);
-const TransformsArray = [MyTransformStream1, MyTransformStream2, MyTransformStream3]
 
 
 if (!config) {
@@ -27,7 +31,9 @@ if (!config) {
 
 configValidation(config)
 
-//MyReadableStream.pipe(MyTransformStream1).pipe(MyWritableStream)
+const TransformsArray = [];
+config.split('-').map((el) => TransformsArray.push(new TransformStream(el)))
+
 stream.pipeline(
     MyReadableStream,
     ...TransformsArray,
@@ -38,32 +44,6 @@ stream.pipeline(
         }
     }
 );
-
-/*if (input) {
-    try {
-        const readStream = fs.createReadStream(input, {encoding: 'utf8'});
-        const writeStream = fs.createWriteStream(output, {encoding: 'utf8'});
-        readStream.on('data', chunk => handlerReadFile(input, output, config, handlerWriteFile));
-        readStream.on('end', () => console.log('end'))
-        readStream.on('error', (error) => {
-            stderr.write('Input file not exist, please pass the correct input\n');
-        })
-    } catch (err) {
-        stderr.write('Input file not exist, please pass the correct input\n');
-        exit(1);
-    }
-} else if (!input && output) {
-    try {
-        fs.statSync(output);
-        stdout.write('Please, type your text for ciphering:\n');
-        stdin.on('data', data => {
-            handlerWriteFile(output, cipher(data.toString(), config));
-        });
-    } catch (err) {
-        stderr.write('Output file not exist, please pass the correct output\n');
-        exit(1);
-    }
-}*/
 
 
 
