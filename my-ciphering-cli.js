@@ -1,52 +1,43 @@
 const {parseCondition} = require("./parseCmdCondition");
-const {handlerReadFile} = require("./readFile");
-const {handlerWriteFile} = require("./writeFile");
-const {cipher} = require("./cipher");
 const {configValidation} = require("./configValidation");
 const { stdin, stdout, exit, argv, stderr } = process;
-const fs = require("fs");
+const {TransformStream} = require('./transformStream');
+const { WritableStream } = require('./writableStream');
+const { ReadableStream } = require('./readableStream');
 const stream = require('stream');
 
-const { Readable } = require('stream');
 
-class ReadableStream extends Readable {
-    constructor(opt) {
-        super(opt);
-    }
-
-    _read(size) {}
-}
-
-class TransformStream extends stream.Transform {
-    constructor(options = {}) {
-        super(options);
-        this.options = options;
-    }
-
-    _transform(chunk, encoding, callback) {
-        this.push(cipher(chunk.toString(), this.options));
-        callback();
-    }
-}
 
 const config = parseCondition(argv, '-c');
 const input = parseCondition(argv, '-i');
 const output = parseCondition(argv, '-o');
 
-const MyTransformStream = new TransformStream(config.toString()) ;
-const MyReadableStream = new ReadableStream();
-
+const MyTransformStream1 = new TransformStream('C1');
+const MyTransformStream2 = new TransformStream('C1');
+const MyTransformStream3 = new TransformStream('C1');
+const MyReadableStream = new ReadableStream(input);
+const MyWritableStream = new WritableStream(output);
+const TransformsArray = [MyTransformStream1, MyTransformStream2, MyTransformStream3]
 
 
 if (!config) {
     stderr.write('Empty config or absent config flag, please, pass the correct config\n');
     exit(3);
 }
+
 configValidation(config)
 
-const readStream = fs.createReadStream(input, {encoding: 'utf8'});
-const writeStream = fs.createWriteStream(output, {encoding: 'utf8'});
-readStream.pipe(MyTransformStream).pipe(writeStream)
+//MyReadableStream.pipe(MyTransformStream1).pipe(MyWritableStream)
+stream.pipeline(
+    MyReadableStream,
+    ...TransformsArray,
+    MyWritableStream,
+    (err) => {
+        if (err) {
+            console.error('Pipeline failed.', err);
+        }
+    }
+);
 
 /*if (input) {
     try {

@@ -4,7 +4,6 @@ const {atbashCipher} = require("./atbashCipher");
 
 module.exports.cipher = (data, config) => {
     let chipherData = data;
-    console.log(chipherData)
     config.split('-').map((el) => {
         if (el === 'C1') {
             chipherData = caesarCipher(chipherData)
