@@ -13,14 +13,6 @@ class WritableStream extends Writable {
       stdout.write(`${chunk.toString()}\n`);
       exit();
     }
-    fs.access(this.options, fs.constants.F_OK, (err) => {
-      if (err) {
-        stderr.write(
-          "Output file not exist, please, pass the correct output\n"
-        );
-        exit(7);
-      }
-    });
     fs.writeFile(
       this.options,
       `${chunk.toString()}\n`,
