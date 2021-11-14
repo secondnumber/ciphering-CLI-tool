@@ -1,3 +1,6 @@
+Clone this repository, then open in your IDE and switch to a develop branch.
+Print to treminal configuration to a ciphering: 
+
 # Ciphering CLI Tool
 
 ## Implement CLI tool that will encode and decode a text by 3 substitution ciphers:
