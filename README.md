@@ -23,3 +23,5 @@ Config is a string with pattern `{XY(-)}n`, where:
 3.  **-o, --output**: a path to output file
 
 For example, config `"C1-C1-R0-A"` means "encode by Caesar cipher => encode by Caesar cipher => decode by ROT-8 => use Atbash"
+Full example of config:
+node my_ciphering_cli -c "C1-C1-R0-A" -i "./input.txt" -o "./output.txt"
