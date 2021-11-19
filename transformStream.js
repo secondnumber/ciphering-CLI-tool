@@ -1,5 +1,5 @@
 const stream = require("stream");
-const { chooseCipher } = require("./cipher");
+const { chooseCipher } = require("./ciphers/cipher");
 
 class TransformStream extends stream.Transform {
   constructor(options = {}) {

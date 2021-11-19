@@ -1,5 +1,5 @@
-const { parseCondition } = require("./parseCmdCondition");
-const { configValidation } = require("./configValidation");
+const { parseCondition } = require("./utils/parseCmdCondition");
+const { configValidation } = require("./utils/configValidation");
 const { exit, argv, stderr } = process;
 const { TransformStream } = require("./transformStream");
 const { WritableStream } = require("./writableStream");

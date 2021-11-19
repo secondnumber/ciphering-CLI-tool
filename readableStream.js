@@ -1,7 +1,7 @@
 const { Readable } = require("stream");
 const fs = require("fs");
 const path = require("path");
-const { stdin, stderr, exit } = process;
+const { stdin, stderr } = process;
 
 class ReadableStream extends Readable {
   constructor(source) {
