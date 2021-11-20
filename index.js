@@ -26,6 +26,7 @@ if (!config) {
   stderr.write(
     "Empty config or absent config flag, please, pass the correct config\n"
   );
+    process.exit(3);
 }
 
 configValidation(config);
@@ -40,6 +41,7 @@ stream.pipeline(
   (err) => {
     if (err) {
       stderr.write("Pipeline failed.", err);
+        process.exit(3);
     }
   }
 );

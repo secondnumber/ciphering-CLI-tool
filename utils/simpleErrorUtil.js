@@ -1,6 +1,6 @@
-const { stderr, exit } = process;
+const { stderr } = process;
 
-module.exports.simpleErrorUtil = (flag) => {
+module.exports.simpleErrorUtil = () => {
             stderr.write('err')
-            //exit(5)
+            process.exit(5)
     }

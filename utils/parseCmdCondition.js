@@ -4,6 +4,7 @@ const { stderr} = process;
 module.exports.parseCondition = (args, flag) => {
     if (flag && flag.length > 1) {
       stderr.write(`Your arguments are duplicated\n`)
+        process.exit(5);
     }
     if (flag && flag.length === 1 && args) {
       const parameterPosition = args.slice(2).indexOf(flag[0]);
@@ -14,10 +15,12 @@ module.exports.parseCondition = (args, flag) => {
               stderr.write(
                   "Output file not exist, please, pass the correct output\n"
               );
+                process.exit(7);
             }
           });
         }
         return args.slice(2)[parameterPosition + 1];
-      } else return null;
+      }
     }
+    else return null;
 };

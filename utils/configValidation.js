@@ -7,5 +7,6 @@ module.exports.configValidation = (config) => {
   });
   if (wrongValues && wrongValues.length > 0) {
     stderr.write("Invalid config, please, pass the correct config\n");
-  }
+    process.exit(2);
+  } else return null;
 };
