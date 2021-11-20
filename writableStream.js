@@ -11,7 +11,6 @@ class WritableStream extends Writable {
   _write(chunk, encoding, callback) {
     if (!this.options) {
       stdout.write(`${chunk.toString()}\n`);
-      exit();
     }
     fs.writeFile(
       this.options,

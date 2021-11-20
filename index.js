@@ -1,6 +1,6 @@
 const { parseCondition } = require("./utils/parseCmdCondition");
 const { configValidation } = require("./utils/configValidation");
-const { exit, argv, stderr } = process;
+const {  argv, stderr } = process;
 const { TransformStream } = require("./transformStream");
 const { WritableStream } = require("./writableStream");
 const { ReadableStream } = require("./readableStream");
@@ -26,7 +26,6 @@ if (!config) {
   stderr.write(
     "Empty config or absent config flag, please, pass the correct config\n"
   );
-  exit(3);
 }
 
 configValidation(config);
@@ -40,8 +39,7 @@ stream.pipeline(
   MyWritableStream,
   (err) => {
     if (err) {
-      console.error("Pipeline failed.", err);
-      exit(3);
+      stderr.write("Pipeline failed.", err);
     }
   }
 );

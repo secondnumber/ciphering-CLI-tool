@@ -8,10 +8,6 @@ class ReadableStream extends Readable {
     super(source);
     this.source = source;
   }
-  _destroy(error, callback) {
-    super._destroy(error, callback);
-  }
-
   _read(size) {
     if (!this.source) {
       stdin.on("data", (data) => {
@@ -24,11 +20,9 @@ class ReadableStream extends Readable {
           stderr.write(
             "Input file not exist, please, pass the correct input\n"
           );
-          process.exit(6);
         }
         if (!data) {
           stderr.write("No data in input file, please, pass the data\n");
-          process.exit(9);
         } else {
           this.push(data);
         }
